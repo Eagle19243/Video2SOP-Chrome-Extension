@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Video Editor</title>
+
+    <link href="vendor/font-awesome.min.css" rel="stylesheet">
+    <link href="vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="public/editor.min.css" rel="stylesheet">
+    <link href="public/app.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="modal fade" id="createstep" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-editor" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row editor">
+                        <div class="col-lg-9 col-md-12">
+                            <div class="row-fluid">
+                                <nav class="navbar navbar-default">
+                                    <div class="container-fluid">
+                                        <div class="collapse navbar-collapse">
+                                            <ul class="nav navbar-nav">
+                                                <li><a href="#" class="text"><i class="fa fa-font" aria-hidden="true"></i></a></li>
+                                                <li><a href="#" class="arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></li>
+                                                <li><a href="#" class="pen"><i class="fa fa-pencil" aria-hidden="true"></i></a></li>
+                                                <li><a href="#" class="figure"><i class="fa fa-square" aria-hidden="true"></i></a></li>
+                                                <li><a href="#" class="blur"><i class="fa fa-tint" aria-hidden="true"></i></i></a></li>
+                                                <li class="disabled" id="deselect"><a href="#" class="deselect"><i class="fa fa-square-o" aria-hidden="true"></i></a></li>
+                                                <li class="disabled" id="delete"><a href="#"><i class="fa fa-times-circle" aria-hidden="true"></i></a></li>
+                                            </ul>
+                                            <ul class="navbar-nav" id="palette">
+                                                <li class="active">
+                                                    <a href="#" class="red"></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="green"></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="yellow"></a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="blue"></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </nav>
+                                <div class="row">
+                                    <div class="col-md-12" id="edit-area">
+                                        <canvas id="canvas"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-12 right-modal">
+                            <button class="btn btn-info btn-block selectvoice"><i class="fa fa-i-cursor" aria-hidden="true"></i> Select text from voice</button>
+                            <textarea class="form-control step-description" id="step-description">Step description...</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary navbar-btn addstep"><i class="fa fa-plus" aria-hidden="true"></i> Add step</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="stepinfo" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img id="step-img" src="" alt="">
+                    <div class="padding">
+                        <textarea class="form-control" id="step-info" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade voice" id="selectvoice" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="text-center">
+                <button class="btn btn-default step-voice-btn step-voice-discard">Discard</button>
+                <button class="btn btn-primary step-voice-btn step-voice-select">Select</button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="voice" id="recordedvoice"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="websites" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body padding text-center">
+                    <h4>Choose a website</h4>
+
+                    <div id="websites-list" class="list-group padding"></div>
+                    <div class="websites-domain hidden padding">
+                        <p>If you have a website with own domain, please enter it here:</p>
+
+                        <input type="text" class="form-control" id="websites-domain-url" placeholder="Domain">
+                    </div>
+
+                    <button type="button" class="btn btn-primary websites-domain hidden" data-dismiss="modal"><i class="fa fa-check" aria-hidden="true"></i> Apply</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="export" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body export-body text-center">
+                    <h4>Choose a way to export</h4>
+                    <div class="row">
+                     
+                        <div class="col-md-5ths export-block pdf">
+                            <div class="export-fire">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                <h4>PDF</h4>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-5ths export-block doc">
+                            <div class="export-fire">
+                                <i class="fa fa-file-word-o" aria-hidden="true"></i>
+                                <h4>Word</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-5ths export-block archive">
+                            <div class="export-fire">
+                                <i class="fa fa-file-archive-o" aria-hidden="true"></i>
+                                <h4>zip</h4>
+                            </div>
+                        </div>
+						   <div class="col-md-5ths export-block1 gdrive1">
+                            <div class="export-fire">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                                <h4>Google Drive</h4>
+								<h6>Coming Soon</h6>
+                            </div>
+                        </div>
+						    <div class="col-md-5ths export-block1 gsites1">
+                            <div class="export-fire">
+                                <i class="fa fa-google" aria-hidden="true"></i>
+                                <h4>Google Sites</h4>
+								<h6>Coming Soon</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="leftside">
+            <input type="text" class="title" value="">
+
+            <div class="spinner">
+                <video preload="auto"></video>
+            </div>
+
+            <div class="row bottomside">
+                <div class="col-md-12 margin-top">
+                    <button type="button" class="control"></button>
+                    <div class="timeline">
+                        <input type="range" class="line" value="0" min="0" max="100" step="0.01">
+                        <div class="points"></div>
+                    </div>
+                    <div class="time">00:00</div>
+                </div>
+
+                <div class="col-md-12 margin-top">
+                    <button type="button" class="btn btn-default frame prev"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous Frame</button>
+                    <button type="button" class="btn btn-default frame next">Next Frame <i class="fa fa-caret-right" aria-hidden="true"></i></button>
+                    <span class="space"></span>
+                    <button type="button" class="btn btn-default action prev"><i class="fa fa-backward" aria-hidden="true"></i> Previous Action</button>
+                    <button type="button" class="btn btn-default action next">Next Action <i class="fa fa-forward" aria-hidden="true"></i></button>
+                    <span class="space"></span>
+                    <button type="button" class="btn btn-default screenshot"><i class="fa fa-plus" aria-hidden="true"></i> Create step</button>
+                </div>
+            </div>
+        </div>
+
+        <aside>
+            <button class="closesidebar"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+            <div class="wrapper">
+                <h3>Steps (<span id="steps-count">0</span>)</h3>
+                <button class="btn btn-primary export"><i class="fa fa-share-alt-square" aria-hidden="true"></i> Export</button>
+                <ul id="steps"></ul>
+                <button id="steps-remove_all">Remove all steps</button>
+            </div>
+        </aside>
+    </main>
+
+    <script src="vendor/jquery.min.js"></script>
+    <script src="vendor/jquery-ui.min.js"></script>
+    <script src="vendor/bootstrap.min.js"></script>
+    <script src="vendor/StackBlur.js"></script>
+    <script src="vendor/fabric.js"></script>
+    <script src="vendor/FileSaver.js"></script>
+    <script src="vendor/jszip.min.js"></script>
+    <script src="vendor/html-docx.js"></script>
+    <script src="vendor/pdfmake.min.js"></script>
+    <script src='vendor/vfs_fonts.js'></script>
+    <script src='vendor/MediaUploader.js'></script>
+    <script src='vendor/gdrive.js'></script>
+    <script src='vendor/TextHighlighter.min.js'></script>
+    <script src="vendor/customiseControls.min.js"></script>
+    <script src="vendor/md5.min.js"></script>
+    <script src="public/editor.min.js"></script>
+    <script src="public/app.min.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+</body>
+</html>

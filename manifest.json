@@ -1,0 +1,53 @@
+{
+    "name" : "Video2SOP",
+    "short_name" : "video2sop",
+    "author": "Anton Troynin",
+    "version" : "3.1",
+    "manifest_version" : 2,
+    "minimum_chrome_version": "49",
+    "incognito": "not_allowed",
+    "description" : "Screen recorder and editor.",
+    "content_security_policy": "script-src 'self' https://apis.google.com 'unsafe-eval'; object-src 'self'",
+    "background": {
+        "scripts": ["public/background.min.js", "vendor/RecordRTC.min.js"],
+        "persistent": false
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["public/listener.min.js"],
+            "run_at": "document_end",
+            "all_frames": true,
+            "match_about_blank": true
+        }
+    ],
+    "browser_action" : {
+        "default_icon": "img/icon.png",
+        "default_title": "Screen Recorder",
+        "default_popup": "popup.html"
+    },
+    "icons" : {
+        "16" : "img/icon.png",
+        "22" : "img/icon.png",
+        "32" : "img/icon.png",
+        "48" : "img/icon.png",
+        "128": "img/icon.png"
+    },
+    "permissions": [
+        "desktopCapture",
+        "storage",
+        "unlimitedStorage",
+        "tabs",
+        "downloads",
+        "downloads.shelf",
+        "<all_urls>",
+        "identity"
+    ],
+      "oauth2": {
+        "client_id": "487334839414-rgm1qbokhnjtvtab1tq3bjo17sh97r0g.apps.googleusercontent.com",
+        "scopes": ["https://www.googleapis.com/auth/drive"]
+    },
+    "web_accessible_resources": [
+        "img/icon.png"
+    ]
+}
